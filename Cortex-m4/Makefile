@@ -1,26 +1,34 @@
-#******************************************************************************
-# Copyright (C) 2017 by Alex Fosdick - University of Colorado
-#
-# Redistribution, modification or use of this software in source or binary
-# forms is permitted as long as the files maintain this copyright. Users are 
-# permitted to modify this and use it to learn about the field of embedded
-# software. Alex Fosdick and the University of Colorado are not liable for any
-# misuse of this material. 
-#
-#*****************************************************************************
-
 #------------------------------------------------------------------------------
-# <Put a Description Here>
+# Cross-platform build system for the MSP432P401R embedded firmware project.
+# The build below supports native host compilation for testing and ARM cross-compilation
+# for deployment to the MSP432P401R (Cortex-M4) target.
+#
+# Author: Khanh Pham (Kevin)
+# Date: February 2026
 #
 # Use: make [TARGET] [PLATFORM-OVERRIDES]
 #
 # Build Targets:
-#      <Put a description of the supported targets here>
+#      build        - Compiles and links all source files into $(TARGET).out
+#                     and prints memory usage via the size tool
+#      compile-all  - Compiles all source files into object files without linking
+#      %.i          - Generates preprocessed output for a given source file
+#      %.asm        - Generates assembly output for a given source file
+#      %.o          - Compiles a single source file into an object file
+#      clean        - Removes all generated build artifacts (.o, .i, .asm,
+#                     .d, .map, .out)
 #
 # Platform Overrides:
-#      <Put a description of the supported Overrides here
+#      PLATFORM=HOST    (default) Compiles with gcc for the native host machine.
+#                       Enables host-side testing and debugging without hardware.
+#
+#      PLATFORM=MSP432  Cross-compiles with arm-none-eabi-gcc targeting the
+#                       MSP432P401R (ARM Cortex-M4, ARMv7E-M, hard FPU).
+#                       Uses the provided linker script msp432p401r.lds and
+#                       generates a .map file for memory analysis.
 #
 #------------------------------------------------------------------------------
+
 include sources.mk
 
 # Platform Overrides
@@ -80,7 +88,7 @@ SPECS = nosys.specs
 SPECS_FLAGS = --specs=$(SPECS)
 
 # Linker Flags
-LINKER_FILE = ../msp432p401r.lds
+LINKER_FILE = msp432p401r.lds
 #Directive unfound
 # Fix this shit
 

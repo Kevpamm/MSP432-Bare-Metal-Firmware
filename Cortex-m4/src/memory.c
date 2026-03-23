@@ -17,6 +17,7 @@
  * allocated buffer array used for manipulation.
  *
  * @author Alex Fosdick
+ * @author Khanh Pham (Memory Functions)
  * @date April 1 2017
  *
  */
@@ -93,9 +94,21 @@ uint8_t * my_memset(uint8_t * src, size_t length, uint8_t value) {
 
 uint8_t * my_memzero(uint8_t * src, size_t length) {
   uint8_t * temp = src;
-  while(length--) {
+  while (length--) {
     *temp = 0;
     temp++;
+  }
+  return src;
+}
+
+uint8_t * my_reverse(uint8_t * src, size_t length) {
+  size_t count = 0;
+
+  while (length/2 - count) {
+    uint8_t temp = *(src + count);
+    *(src + count) = *(src + length - (count + 1));
+    *(src + length - (count + 1)) = temp;
+    count++;
   }
   return src;
 }

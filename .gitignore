@@ -1,0 +1,11 @@
+#VIM SWAP FILE
+*.swp
+*.swo
+
+#Build Artifacts
+*.o
+*.out
+*.map
+*.d
+*.i
+*.asm

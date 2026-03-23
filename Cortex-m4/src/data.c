@@ -1,83 +1,106 @@
 #include "data.h"
 #include "memory.h"
 
-uint8_t my_itoa(int32_t data, uint8_t * ptr, uint32_t base) {
-  int32_t temp = data;
-  if (base == 10) {
-    uint8_t length = 0;
-    while ((temp /= 10) != 0)
-      length++;
-    length++; //length gives the number of digits of int32_t data parameter
+uint8_t my_itoa (int32_t data, uint8_t * ptr, uint8_t base) {
+    int32_t temp = data;
+    uint8_t i = 0;
+    int32_t digit = 0;
+    switch (base) {
+        case 2:
+            do {
+                digit = temp % 2;
+                if (digit < 0)
+                    digit = -digit;
+                *(ptr + i) = digit + '0';
+                temp /= 2;
+                i++;
+            } while (temp != 0);
+            if (data < 0) {
+                *(ptr + i) = '-';
+                i++;
+            }
 
-    *(ptr + length) = '\0';
+            my_reverse(ptr, i);
+            *(ptr + i) = '\0';
+            i++;
+            return i;
 
-    while (--length) {
-      *(ptr + length) = ((data % 10) + '0');
-      data /= 10;
+        case 8:
+            do {
+                digit = temp % 8;
+                if (digit < 0)
+                    digit = -digit;
+                *(ptr + i) = digit + '0';
+                temp /= 8;
+                i++;
+            } while (temp != 0);
+            if (data < 0) {
+                *(ptr + i) = '-';
+                i++;
+            }
+            my_reverse(ptr, i);
+            *(ptr + i) = '\0';
+            i++;
+            return i;
+
+        case 10:
+            do {
+                digit = temp % 10;
+                if (digit < 0)
+                    digit = -digit;
+                *(ptr + i) = digit + '0';
+                temp /= 10;
+                i++;
+            } while (temp != 0);
+            if (data < 0) {
+                *(ptr + i) = '-';
+                i++;
+            }
+            my_reverse(ptr, i);
+            *(ptr + i) = '\0';
+            i++;
+            return i;
+
+        case 16:
+            do {
+                digit = temp % 16;
+                if (digit < 0)
+                    digit = -digit;
+                if (digit < 10)
+                    *(ptr + i) = digit + '0';
+                else
+                    *(ptr + i) = (digit - 10) + 'A';
+                temp /= 16;
+                i++;
+            } while (temp != 0);
+            if (data < 0) {
+                *(ptr + i) = '-';
+                i++;
+            }
+            my_reverse(ptr, i);
+            *(ptr + i) = '\0';
+            i++;
+            return i;
+
+        default:
+            return 0;
     }
-    *ptr = data;
-  }
+}
 
-  else if (base == 2) {
-    uint8_t i = 0;
-    do {
-      *(ptr + i) = (temp % 2) + '0';
-      temp /= 2;
-      i++;
-    } while (temp != 0);
+int32_t my_atoi(uint8_t * ptr, uint8_t digits, uint8_t base) {
 
-    //Reverse the order of elements at the memory location
-    i += 1;
-    my_reverse(ptr, i); //This function is declared in "memory.h"
+  switch (base) {
+    case 2:
+      return;
 
-    //Add the null terminal at the end of the ASCII string
-    i += 1;
-    *(ptr + i) = '\0';
+    case 8:
+      return;
 
-    //i is also the length of the ASCII string, including the null terminal.
-    return i;
-  }
+    case 10:
+      return;
 
-  else if (base == 8) {
-    uint8_t i = 0;
-    do {
-      *(ptr + i) =  (temp % 8) + '0';
-      temp /= 8;
-      i++;
-    } while (temp != 0);
+    case 16:
+      return;
 
-    //Reverse the order of the element at the memory location
-    i += 1;
-    my_reverse(ptr, i);
-
-    //Add null terminal at the end of the ASCII string
-    i += 1;
-    *(ptr + i) = '\0';
-
-    //i is also the length of the ASCII string, including the null character.
-    return i;
-  }
-
-  else if (base == 16) {
-    uint8_t i = 0;
-    do {
-      *(ptr + i) = (temp % 16) + '0';
-      temp /= 16;
-      i++;
-    } while (temp != 0);
-
-   i += 1;
-   my_reverse(ptr, i);
-
-   i += 1;
-   *(ptr + i) = '\0'
-
-   return i;
-  }
-
-  else {
-    printf("This base you chose is not supported\n");
-    printf("Please choose a different base");
-    return 0;
   }
 }
